@@ -6,6 +6,7 @@ FILE_NAME = "sensor.csv"
 TRAIN_FILE_NAME = "train.csv"
 TEST_FILE_NAME = "test.csv"
 
+
 class TrainingPipelineConfig:
 # I want to store all o/p in single folder
     def __init__(self):
