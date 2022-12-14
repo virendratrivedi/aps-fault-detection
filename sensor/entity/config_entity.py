@@ -2,9 +2,13 @@ import os,sys
 from sensor.exception import SensorException
 from datetime import datetime
 
+
 FILE_NAME = "sensor.csv"
 TRAIN_FILE_NAME = "train.csv"
 TEST_FILE_NAME = "test.csv"
+TRANSFORMER_OBJECT_FILENAME = "transformer.pkl" 
+TARGET_ENCODER_OBJECT_FILE_NAME = "target_encoder.pkl"
+MODEL_FILE_NAME = "model.pkl"
 
 
 class TrainingPipelineConfig:
@@ -28,8 +32,6 @@ class DataIngestionConfig:
         except Exception as e:
             raise SensorException(e, sys)
 
-        
-
     def to_dict(self,)->dict:
         try:
             return self.__dict__
@@ -47,7 +49,20 @@ class DataValidationConfig:
         
 
 
-class DataTransformationConfig:...
-class ModelTrainerConfig:...
+class DataTransformationConfig:
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+        self.data_transformation_dir=os.path.join(training_pipeline_config.artifact_dir,"data_transformation")
+        self.transformation_object_path=os.path.join(self.data_transformation_dir,"transformer",TRANSFORMER_OBJECT_FILENAME)
+        self.transform_train_path=os.path.join(self.data_transformation_dir,"transformer",TRAIN_FILE_NAME)
+        self.transform_test_path=os.path.join(self.data_transformation_dir,"transformer",TEST_FILE_NAME)
+        self.target_encoder_path=os.path.join(self.data_transformation_dir,"target_encoder",TARGET_ENCODER_OBJECT_FILE_NAME)
+
+class ModelTrainerConfig:
+    def __init__(self):
+        pass
+
+
+
+
 class ModelEvaluationConfig:...
 class ModelPusherConfig:...

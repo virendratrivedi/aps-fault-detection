@@ -1,6 +1,7 @@
 from sensor.entity import artifact_entity,config_entity
 from sensor.exception import SensorException
 from sensor.logger import logging
+from sensor.config import TARGET_COLUMN
 import os,sys
 from typing import Optional
 from scipy.stats import ks_2samp 
@@ -8,7 +9,7 @@ from scipy import stats
 import pandas as pd
 import numpy as np
 from sensor import utils
-from sensor import utils
+
 
 
 class DataValidation:
@@ -141,7 +142,7 @@ class DataValidation:
             logging.info(f"Is all required column in Test DF")
             test_df_column_status = self.is_required_column_exist(base_df=base_df, current_df=test_df,report_key_name="missing_column_within_test_dataset")
 
-            exclude_columns=["class"]
+            exclude_columns=[TARGET_COLUMN]
             base_df = utils.convert_column_float(df=base_df, exclude_columns=exclude_columns)
             train_df = utils.convert_column_float(df=train_df, exclude_columns=exclude_columns)
             test_df = utils.convert_column_float(df=test_df, exclude_columns=exclude_columns)
