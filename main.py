@@ -2,7 +2,8 @@ from sensor.logger import logging
 from sensor.exception import SensorException
 from sensor.utils import get_collection_as_dataframe
 import sys,os
-#import yaml
+from sensor.components.model_trainer import ModelTrainer
+from sensor.components.data_transformation import DataTransformation
 from sensor.entity import config_entity
 from sensor.components import data_ingestion
 from sensor.components.data_ingestion import DataIngestion
@@ -37,6 +38,18 @@ if __name__=='__main__':
 
           data_validation_artifect = data_validation.initiate_data_validation()  
 
+          # Data Transformation
+          data_transformation_config = config_entity.DataTransformationConfig(training_pipeline_config=training_pipeline_config)
+          data_transformation = DataTransformation(data_transformation_config=data_transformation_config, 
+                                                    data_ingestion_artifect=data_ingestion_artifact)
+          data_transformation_artifact = data_transformation.initiate_data_transformation()   
+
+          # Model Trainer
+          model_trainer_config = config_entity.ModelTrainerConfig(training_pipeline_config=training_pipeline_config)   
+          model_trainer = ModelTrainer(model_trainer_config=model_trainer_config, 
+                                       data_transformation_artifect=data_transformation_artifact)   
+   
+          model_trainer_artifect = model_trainer.initiate_model_trainer()                                  
           
      except Exception as e:
           raise SensorException(e, sys)

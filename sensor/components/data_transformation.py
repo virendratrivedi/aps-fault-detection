@@ -7,7 +7,7 @@ from typing import Optional
 import pandas as pd
 import numpy as np
 from sensor import utils
-from sklearn.preprocessing import Pipeline
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 from imblearn.combine import SMOTETomek
 from sklearn.impute import SimpleImputer
@@ -25,21 +25,20 @@ class DataTransformation:
                 except Exception as e:
                     raise SensorException(e, sys)
 
-    @classmethod(f)
-    def get_data_transformer_object()->Pipeline:
+    @classmethod
+    def get_data_transformer_object(cls)->Pipeline:
         try:
-            simple_imputer = SimpleImputer(strategy=="constant",fill_value=0)
-            robust_scaler = RobustScaler()
-
+            simple_imputer = SimpleImputer(strategy='constant', fill_value=0)
+            robust_scaler =  RobustScaler()
             pipeline = Pipeline(steps=[
-                ('Imputer',simple_imputer),
-                ('RobustScaler',robust_scaler)
-            ])
-
+                    ('Imputer',simple_imputer),
+                    ('RobustScaler',robust_scaler)
+                ])
             return pipeline
-
         except Exception as e:
             raise SensorException(e, sys)
+
+        
 
 
     def initiate_data_transformation(self)->artifact_entity.DataTransformationArtifact:
@@ -63,12 +62,20 @@ class DataTransformation:
             target_feature_test_array = label_encoder.transform(target_feature_test_df)
 
             transformation_pipline = DataTransformation.get_data_transformer_object()
-            input_features_train_array= transformation_pipline.fit(input_features_train_df)
-            input_features_test_array = transformation_pipline.fit(input_features_test_df)
+            transformation_pipline.fit(input_features_train_df)
+
+            '''#transforming input features
+            input_feature_train_arr = transformation_pipleine.transform(input_feature_train_df)
+            input_feature_test_arr = transformation_pipleine.transform(input_feature_test_df)
+'''
+            #transforming input features
+            input_features_train_array= transformation_pipline.transform(input_features_train_df)
+            input_features_test_array = transformation_pipline.transform(input_features_test_df)
 
             smt = SMOTETomek(sampling_strategy="minority")
             logging.info(f"Before Resampling in training set input:{input_features_train_array.shape} Target:{target_feature_train_array.shape}")
             input_features_train_array,target_feature_train_array=smt.fit_resample(input_features_train_array,target_feature_train_array)
+            
             logging.info(f"After Resampling in training set input:{input_features_train_array.shape} Target:{target_feature_train_array.shape}")
             logging.info(f"Before Resampling in training set input:{input_features_test_array.shape} Target{target_feature_test_array.shape}")
             input_features_test_array,target_feature_test_array=smt.fit_resample(input_features_test_array,target_feature_test_array)

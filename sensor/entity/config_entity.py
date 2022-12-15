@@ -53,16 +53,17 @@ class DataTransformationConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         self.data_transformation_dir=os.path.join(training_pipeline_config.artifact_dir,"data_transformation")
         self.transformation_object_path=os.path.join(self.data_transformation_dir,"transformer",TRANSFORMER_OBJECT_FILENAME)
-        self.transform_train_path=os.path.join(self.data_transformation_dir,"transformer",TRAIN_FILE_NAME)
+        self.transform_train_path=os.path.join(self.data_transformation_dir,"transformer",TRAIN_FILE_NAME.replace("csv", "npz"))
         self.transform_test_path=os.path.join(self.data_transformation_dir,"transformer",TEST_FILE_NAME)
         self.target_encoder_path=os.path.join(self.data_transformation_dir,"target_encoder",TARGET_ENCODER_OBJECT_FILE_NAME)
 
 class ModelTrainerConfig:
-    def __init__(self):
-        pass
-
-
-
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+        self.model_training_dir=os.path.join(training_pipeline_config.artifact_dir,"Model_Trainer")
+        self.model_path=os.path.join(self.model_training_dir,"model",MODEL_FILE_NAME)
+        self.expected_score = 0.7
+        self.overfiting_thresold = 0.1
+        
 
 class ModelEvaluationConfig:...
 class ModelPusherConfig:...
