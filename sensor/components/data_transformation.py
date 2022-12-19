@@ -38,9 +38,6 @@ class DataTransformation:
         except Exception as e:
             raise SensorException(e, sys)
 
-        
-
-
     def initiate_data_transformation(self)->artifact_entity.DataTransformationArtifact:
         try:
             train_df=pd.read_csv(self.data_ingestion_artifect.train_file_path)
@@ -72,8 +69,10 @@ class DataTransformation:
             input_features_train_array= transformation_pipline.transform(input_features_train_df)
             input_features_test_array = transformation_pipline.transform(input_features_test_df)
 
-            smt = SMOTETomek(sampling_strategy="minority")
+            smt = SMOTETomek() #sampling_strategy="minority"
             logging.info(f"Before Resampling in training set input:{input_features_train_array.shape} Target:{target_feature_train_array.shape}")
+            print("====",input_features_train_array)
+            print("====",target_feature_train_array)
             input_features_train_array,target_feature_train_array=smt.fit_resample(input_features_train_array,target_feature_train_array)
             
             logging.info(f"After Resampling in training set input:{input_features_train_array.shape} Target:{target_feature_train_array.shape}")
