@@ -48,8 +48,9 @@ if __name__=='__main__':
           model_trainer_config = config_entity.ModelTrainerConfig(training_pipeline_config=training_pipeline_config)   
           model_trainer = ModelTrainer(model_trainer_config=model_trainer_config, 
                                        data_transformation_artifect=data_transformation_artifact)   
-   
-          model_trainer_artifect = model_trainer.initiate_model_trainer()                                  
+          
+          model_trainer_artifect = model_trainer.initiate_model_trainer()  
+                                      
           
      except Exception as e:
           raise SensorException(e, sys)

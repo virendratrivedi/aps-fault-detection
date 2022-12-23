@@ -64,7 +64,7 @@ class ModelTrainer:
             logging.info(f"F1 Triain Score:{f1_train_score} and F1 test Score:{f1_test_score}")
 
             logging.info(f"Checking our Model Overfiting or not")  
-            diff = abs(f1_train_score,f1_test_score)   
+            diff = abs(f1_train_score-f1_test_score) # Difference   
             if diff>self.model_trainer_config.overfiting_thresold:
                 raise Exception(f"Model is overfiting:{self.model_trainer_config.overfiting_thresold} difference is: {diff}")
 

@@ -48,13 +48,12 @@ class DataValidationConfig:
 
         
 
-
 class DataTransformationConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         self.data_transformation_dir=os.path.join(training_pipeline_config.artifact_dir,"data_transformation")
         self.transformation_object_path=os.path.join(self.data_transformation_dir,"transformer",TRANSFORMER_OBJECT_FILENAME)
-        self.transform_train_path=os.path.join(self.data_transformation_dir,"transformer",TRAIN_FILE_NAME.replace("csv", "npz"))
-        self.transform_test_path=os.path.join(self.data_transformation_dir,"transformer",TEST_FILE_NAME)
+        self.transform_train_path=os.path.join(self.data_transformation_dir,"transformed",TRAIN_FILE_NAME.replace("csv", "npz"))
+        self.transform_test_path=os.path.join(self.data_transformation_dir,"transformed",TEST_FILE_NAME.replace("csv", "npz"))
         self.target_encoder_path=os.path.join(self.data_transformation_dir,"target_encoder",TARGET_ENCODER_OBJECT_FILE_NAME)
 
 class ModelTrainerConfig:
@@ -65,5 +64,9 @@ class ModelTrainerConfig:
         self.overfiting_thresold = 0.1
         
 
-class ModelEvaluationConfig:...
+class ModelEvaluationConfig:
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+        self.change_threshold = 0.01
+
+
 class ModelPusherConfig:...

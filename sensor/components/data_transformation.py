@@ -47,7 +47,7 @@ class DataTransformation:
             input_features_train_df = train_df.drop(TARGET_COLUMN,axis=1)
             input_features_test_df = test_df.drop(TARGET_COLUMN,axis=1)
 
-            # o/p feature for Training and Test Data
+            # O/P or Target feature for Training and Test Data
             target_feature_train_df = train_df[TARGET_COLUMN]
             target_feature_test_df = test_df[TARGET_COLUMN]
              
@@ -60,19 +60,14 @@ class DataTransformation:
 
             transformation_pipline = DataTransformation.get_data_transformer_object()
             transformation_pipline.fit(input_features_train_df)
-
-            '''#transforming input features
-            input_feature_train_arr = transformation_pipleine.transform(input_feature_train_df)
-            input_feature_test_arr = transformation_pipleine.transform(input_feature_test_df)
-'''
+            
             #transforming input features
-            input_features_train_array= transformation_pipline.transform(input_features_train_df)
+            input_features_train_array = transformation_pipline.transform(input_features_train_df)
             input_features_test_array = transformation_pipline.transform(input_features_test_df)
 
-            smt = SMOTETomek() #sampling_strategy="minority"
+            smt = SMOTETomek() # sampling_strategy="minority" showing error so make it auto
             logging.info(f"Before Resampling in training set input:{input_features_train_array.shape} Target:{target_feature_train_array.shape}")
-            print("====",input_features_train_array)
-            print("====",target_feature_train_array)
+            
             input_features_train_array,target_feature_train_array=smt.fit_resample(input_features_train_array,target_feature_train_array)
             
             logging.info(f"After Resampling in training set input:{input_features_train_array.shape} Target:{target_feature_train_array.shape}")
