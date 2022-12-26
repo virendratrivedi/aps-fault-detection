@@ -8,6 +8,8 @@ from sensor.entity import config_entity
 from sensor.components import data_ingestion
 from sensor.components.data_ingestion import DataIngestion
 from sensor.components.data_validation import DataValidation
+from sensor.components.model_evaluation import ModelEvaluation
+from sensor.components.model_pusher import ModelPusher
 
 def test_looging_and_exception():
      try:
@@ -49,7 +51,28 @@ if __name__=='__main__':
           model_trainer = ModelTrainer(model_trainer_config=model_trainer_config, 
                                        data_transformation_artifect=data_transformation_artifact)   
           
-          model_trainer_artifect = model_trainer.initiate_model_trainer()  
+          model_trainer_artifact = model_trainer.initiate_model_trainer() 
+
+          # Model Evaluation
+          model_evel_config = config_entity.ModelEvaluationConfig(training_pipeline_config=training_pipeline_config) 
+          model_evel = ModelEvaluation(model_evel_config=model_evel_config, data_ingestion_artifect=data_ingestion_artifact, 
+                        data_transformation_artifect=data_transformation_artifact, 
+                        model_trainer_artifect=model_trainer_artifact)
+          
+          model_evel_artifect = model_evel.initiate_model_evaluation()  
+
+          # Model Pusher
+          model_pusher_config = config_entity.ModelPusherConfig(training_pipeline_config)
+          model_pusher=ModelPusher(model_pusher_config=model_pusher_config, 
+                                   data_transformation_artifact=data_transformation_artifact, 
+                                   model_trainer_artifact=model_trainer_artifact)
+
+          model_pusher_artifact = model_pusher.initiate_model_pusher()                         
+
+
+
+
+
                                       
           
      except Exception as e:
