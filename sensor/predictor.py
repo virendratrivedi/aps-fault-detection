@@ -102,13 +102,13 @@ class ModelResolver: # Get location of Tranformaer,Model and targetencoder
             raise e       
             
 
-
+'''
 class Predictor:
 
     def __init__(self,model_resolver:ModelResolver):
         self.model_resolver = model_resolver
     
-        
+        '''
 
 
 

@@ -67,22 +67,24 @@ class ModelEvaluation:
             y_true = target_encoder.transform(target_df)
            # Accuracy using previosuly Trained Model 
             logging.info("Accuracy using previosuly Trained Model ") 
-            input_arr = transformer.transform(test_df) 
+
+            input_feature_name = list(transformer.feature_names_in_) # Bug Solving,Same for trained model also
+            input_arr = transformer.transform(test_df[input_feature_name]) 
             y_pred = model.predict(input_arr)
-            print(f"Pridiction using previous model: {target_encoder.inverse_transform(y_pred[:5])}")
+            print(f"Pridiction using previous model: {target_encoder.inverse_transform(y_pred[:7])}")
             previous_model_score = f1_score(y_true=y_true, y_pred=y_pred)
             logging.info(f"Accuracy using previosuly Trained Model:{previous_model_score}") 
 
            # Accuracy Using current train Model
-            
-            input_arr = current_tranformer.transform(test_df)
+            input_feature_name = list(current_tranformer.feature_names_in_)
+            input_arr = current_tranformer.transform(test_df[input_feature_name])
             y_pred = current_model.predict(input_arr)
             y_true = current_target_encoder.transform(target_df)
             print(f"Pridiction using Trained model: {current_target_encoder.inverse_transform(y_pred[:7])}")
             current_model_score = f1_score(y_true=y_true, y_pred=y_pred)
             logging.info(f"Accuracy using Current Trained Model:{current_model_score}") 
 
-            if current_model_score<previous_model_score:
+            if current_model_score<=previous_model_score:
                 logging.info(f"Current Trained Model is not greater than previous Model") 
                 raise Exception("Current Trained Model is not greater than previous Model")
 

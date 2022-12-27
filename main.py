@@ -1,4 +1,4 @@
-from sensor.logger import logging
+'''from sensor.logger import logging
 from sensor.exception import SensorException
 from sensor.utils import get_collection_as_dataframe
 import sys,os
@@ -9,8 +9,13 @@ from sensor.components import data_ingestion
 from sensor.components.data_ingestion import DataIngestion
 from sensor.components.data_validation import DataValidation
 from sensor.components.model_evaluation import ModelEvaluation
-from sensor.components.model_pusher import ModelPusher
+from sensor.components.model_pusher import ModelPusher'''
+from sensor.pipeline.training_pipiline import start_training_pipiline
+from sensor.exception import SensorException
+import os,sys
+from sensor.pipeline.batch_prediction import start_batch_prediction
 
+file_path="/config/workspace/aps_failure_training_set1.csv"
 def test_looging_and_exception():
      try:
           logging.info("starting the test and logger function")
@@ -22,6 +27,14 @@ def test_looging_and_exception():
           raise SensorException(e, sys)
 
 if __name__=='__main__':
+     try:
+          
+          #start_training_pipiline()
+          output_file = start_batch_prediction(input_file_path=file_path)
+          print(output_file)
+     except Exception as e:
+          raise SensorException(e, sys)
+     '''
      try:
           #test_looging_and_exception()
           #get_collection_as_dataframe(database_name='aps', collection_name='sensor')
@@ -67,9 +80,7 @@ if __name__=='__main__':
                                    data_transformation_artifact=data_transformation_artifact, 
                                    model_trainer_artifact=model_trainer_artifact)
 
-          model_pusher_artifact = model_pusher.initiate_model_pusher()                         
-
-
+          model_pusher_artifact = model_pusher.initiate_model_pusher()   
 
 
 
@@ -78,7 +89,7 @@ if __name__=='__main__':
      except Exception as e:
           raise SensorException(e, sys)
                    
-
+'''
 
 '''
 import pymongo

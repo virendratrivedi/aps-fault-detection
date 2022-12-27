@@ -19,6 +19,7 @@ class DataTransformation:
                 data_ingestion_artifect:artifact_entity.DataIngestionArtifact):
         
                 try:
+                    logging.info(f"{'>>'*20} Data Transformation {'<<'*20}")
                     self.data_transformation_config=data_transformation_config
                     self.data_ingestion_artifect=data_ingestion_artifect
 
@@ -65,7 +66,7 @@ class DataTransformation:
             input_features_train_array = transformation_pipline.transform(input_features_train_df)
             input_features_test_array = transformation_pipline.transform(input_features_test_df)
 
-            smt = SMOTETomek() # sampling_strategy="minority" showing error so make it auto
+            smt = SMOTETomek(random_state=42) # sampling_strategy="minority" showing error so make it auto
             logging.info(f"Before Resampling in training set input:{input_features_train_array.shape} Target:{target_feature_train_array.shape}")
             
             input_features_train_array,target_feature_train_array=smt.fit_resample(input_features_train_array,target_feature_train_array)
