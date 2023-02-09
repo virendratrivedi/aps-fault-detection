@@ -100,6 +100,7 @@ class DataTransformation:
                 target_encoder_path=self.data_transformation_config.target_encoder_path)
 
             logging.info(f"Data Tranformation Object") 
+            
             return data_transformation_artifect   
 
         except Exception as e:
